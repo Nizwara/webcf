@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { AuthProvider } from "@/components/auth-provider"
+import { LayoutWrapper } from "@/components/layout-wrapper"
 
 export const metadata: Metadata = {
   title: "Cloudflare Account Manager",
@@ -40,7 +41,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </AuthProvider>
       </body>
     </html>
   )

@@ -29,6 +29,7 @@ interface AuthContextType {
   addCloudflareAccount: (account: Omit<CloudflareAccount, "id">) => Promise<void>
   removeCloudflareAccount: (id: string) => Promise<void>
   updateCloudflareAccount: (id: string, updates: Partial<CloudflareAccount>) => Promise<void>
+  agreeToLicense: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -192,6 +193,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const agreeToLicense = () => {
+    const mockUser: User = { id: "guest", name: "Guest User", email: "guest@example.com" }
+    setUser(mockUser)
+    localStorage.setItem("user", JSON.stringify(mockUser))
+    localStorage.setItem("license_agreed", "true")
+    console.log("[v0] License agreed, guest session created.")
+  }
+
   const value: AuthContextType = {
     user,
     cloudflareAccounts,
@@ -202,6 +211,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     addCloudflareAccount,
     removeCloudflareAccount,
     updateCloudflareAccount,
+    agreeToLicense,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
